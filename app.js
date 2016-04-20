@@ -17,7 +17,11 @@ utils.loadConfig(__dirname + '/config', function(config) {
   var server_port = process.env.OPENSHIFT_NODEJS_PORT || config[ENV].PORT;
   server_port = parseInt(server_port, 10);
   var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || config[ENV].HOST;	
-	
+
+  log('server port: %d', server_port)
+  log('server ip: %s', server_ip_address)
+  
+  
   app.use(function(req, res, next) {
     res.removeHeader("X-Powered-By");
     next();
