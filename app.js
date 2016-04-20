@@ -12,6 +12,12 @@ var connect        = require('connect'),
     dbPath;
 
 utils.loadConfig(__dirname + '/config', function(config) {
+	
+	
+  var server_port = process.env.OPENSHIFT_NODEJS_PORT || config[ENV].PORT;
+  server_port = parseInt(server_port, 10);
+  var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || config[ENV].HOST;	
+	
   app.use(function(req, res, next) {
     res.removeHeader("X-Powered-By");
     next();
@@ -47,7 +53,7 @@ utils.loadConfig(__dirname + '/config', function(config) {
       log('Address in use, retrying...');
       setTimeout(function () {
         app.close();
-        app.listen(config[ENV].PORT, function() {
+        app.listen(server_port, server_ip_address, function() {
           app.serverUp = true;
         });
       }, 1000);
@@ -55,10 +61,10 @@ utils.loadConfig(__dirname + '/config', function(config) {
   });
 
   if (!module.parent) {
-    app.listen(config[ENV].PORT, function() {
+    app.listen(server_port, server_ip_address, function() {
       app.serverUp = true;
     });
-    log('Express server listening on port %d, environment: %s', app.address().port, app.settings.env);
+    log('Express server listening on port %d, environment: %s', server_port, app.settings.env);
   }
 
   AppEmitter.on('checkApp', function() {

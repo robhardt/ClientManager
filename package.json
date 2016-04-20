@@ -27,6 +27,6 @@
     "scripts": {
       "test"        : "node_modules/.bin/mocha --ui bdd --recursive --reporter spec --timeout 10000 --slow 300",
       "postinstall" : "jake -v || npm install jake@0.2.23 -g",
-      "start"       : "NODE_ENV=production node app.js"
+      "start"       : "NODE_ENV=test node app.js"
     }
 }
